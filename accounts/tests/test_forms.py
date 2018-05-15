@@ -18,14 +18,14 @@ class AccountsUserCreationFormTests(TestCase):
         """
         Valid forms successfully validate
         """
-        user_form = UserCreationSelfForm(data=form_data)
+        user_form = UserCreationForm(data=form_data)
         self.assertTrue(user_form.is_valid())
 
     def test_missing_form_data(self):
         """
         Form with no data does not validate
         """
-        user_form = UserCreationSelfForm(data={})
+        user_form = UserCreationForm(data={})
         self.assertFalse(user_form.is_valid())
 
     def test_email_without_tld(self):
@@ -34,7 +34,7 @@ class AccountsUserCreationFormTests(TestCase):
         """
         invalid_form_data = form_data.copy()
         invalid_form_data['email'] = 'invalidemail@bad'
-        form = UserCreationSelfForm(data=invalid_form_data)
+        form = UserCreationForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
     def test_email_with_bad_chars(self):
@@ -43,7 +43,7 @@ class AccountsUserCreationFormTests(TestCase):
         """
         invalid_form_data = form_data.copy()
         invalid_form_data['email'] = '$&%()#@test.com'
-        form = UserCreationSelfForm(data=invalid_form_data)
+        form = UserCreationForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
     def test_email_without_at_symbol(self):
@@ -52,7 +52,7 @@ class AccountsUserCreationFormTests(TestCase):
         """
         invalid_form_data = form_data.copy()
         invalid_form_data['email'] = 'emailtest.com'
-        form = UserCreationSelfForm(data=invalid_form_data)
+        form = UserCreationForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
     def test_mismatching_passwords(self):
@@ -62,7 +62,7 @@ class AccountsUserCreationFormTests(TestCase):
         invalid_form_data = form_data.copy()
         invalid_form_data['password1'] = 'dfwew323r23g'
         invalid_form_data['password2'] = 'fgsdfhgraqt4e5'
-        form = UserCreationSelfForm(data=invalid_form_data)
+        form = UserCreationForm(data=invalid_form_data)
         self.assertFalse(form.is_valid())
 
 
