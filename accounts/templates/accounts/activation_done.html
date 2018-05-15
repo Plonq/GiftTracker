@@ -1,0 +1,7 @@
+{% extends 'base_titled.html' %}
+
+{% block title %}{% block header %}Account Activated{% endblock %}{% endblock %}
+
+{% block content %}
+  <p>Your account has been activated. You can now <a href="{% url 'accounts:login' %}">Login</a>.</p>
+{% endblock %}

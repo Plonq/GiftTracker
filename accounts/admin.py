@@ -1,7 +1,6 @@
 from django.contrib import admin
-
-from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import Group
 
 from .models import User
 from .forms import UserCreationForm, UserChangeForm
@@ -19,7 +18,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name',)}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions')}),
     )
     # These are the fields that appear when creating a user via django admin
     add_fieldsets = (
@@ -36,7 +35,7 @@ class UserAdmin(BaseUserAdmin):
         # Prevent staff changing their own permissions
         rof = super(UserAdmin, self).get_readonly_fields(request, obj)
         if not request.user.is_superuser:
-            rof += ('is_staff', 'is_superuser', 'groups', 'user_permissions')
+            rof += ('is_staff', 'is_superuser', 'user_permissions')
         return rof
 
     def has_change_permission(self, request, obj=None):
@@ -51,3 +50,4 @@ class UserAdmin(BaseUserAdmin):
 
 # Register user admin
 admin.site.register(User, UserAdmin)
+admin.site.unregister(Group)

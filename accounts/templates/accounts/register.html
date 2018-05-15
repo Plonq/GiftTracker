@@ -1,0 +1,8 @@
+{% extends 'base_titled.html' %}
+
+{% block title %}{% block header %}Register{% endblock %}{% endblock %}
+
+{% block content %}
+  {% load crispy_forms_tags %}
+  {% crispy form %}
+{% endblock %}

@@ -1,8 +1,8 @@
 from django.db import models
 from django.core.mail import send_mail
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
+from django.conf import settings
 from .managers import UserManager
 
 
@@ -15,7 +15,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30)
 
     date_joined = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
 
     # Temporary holding spot when user requests changing their email address
@@ -26,7 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']  # Only used for createsuperuser command
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     class Meta:
         verbose_name = 'user'
@@ -59,7 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         has = super(User, self).has_module_perms(app_label)
         return has
 
-    def send_email(self, subject, message, from_email=None, **kwargs):
+    def send_email(self, subject, message, from_email=settings.DEFAULT_FROM_EMAIL, **kwargs):
         """
         Sends an email to this User.
         """

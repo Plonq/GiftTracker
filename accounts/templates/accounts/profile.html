@@ -1,0 +1,9 @@
+{% extends 'base_titled.html' %}
+
+{% block title %}{% block header %}My Account{% endblock %}{% endblock %}
+
+{% block content %}
+  <p><strong>First Name:</strong> {{ user.first_name }}</p>
+  <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+{% endblock %}
+
