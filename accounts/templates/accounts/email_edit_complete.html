@@ -1,0 +1,7 @@
+{% extends 'base_titled.html' %}
+
+{% block title %}{% block header %}Email Verified{% endblock %}{% endblock %}
+
+{% block content %}
+  <p>Your email address has been verified and updated. <a href="{% url 'profile' %}">My Account</a>.</p>
+{% endblock %}

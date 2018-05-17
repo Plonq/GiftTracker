@@ -74,10 +74,19 @@ class AccountsEmailChangeFormTests(TestCase):
         form = EmailChangeForm(data=valid_form_data)
         self.assertTrue(form.is_valid())
 
-    def test_existing_email(self):
-        User.objects.create(email="test@test.com", first_name="John", last_name="Doe")
+    def test_same_email(self):
+        user = User.objects.create(email="test@test.com", first_name="John", last_name="Doe")
         invalid_form_data = {
             'requested_email': 'test@test.com'
         }
-        form = EmailChangeForm(data=invalid_form_data)
+        form = EmailChangeForm(instance=user, data=invalid_form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_existing_email(self):
+        user = User.objects.create(email="test1@test.com", first_name="John", last_name="Doe")
+        User.objects.create(email="test2@test.com", first_name="John", last_name="Doe")
+        invalid_form_data = {
+            'requested_email': 'test2@test.com'
+        }
+        form = EmailChangeForm(instance=user, data=invalid_form_data)
         self.assertFalse(form.is_valid())

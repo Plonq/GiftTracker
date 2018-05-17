@@ -27,11 +27,11 @@
               <a class="nav-item nav-link" href="/admin">Admin</a>
             {% endif %}
             <a class="nav-item nav-link" href="">Wishlists</a>
-            <a class="nav-item nav-link" href="{% url 'accounts:profile' %}">My Account</a>
-            <a class="nav-item nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+            <a class="nav-item nav-link" href="{% url 'profile' %}">My Account</a>
+            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
           {% else %}
-            <a class="nav-item nav-link" href="{% url 'accounts:login' %}">Login</a>
-            <a class="nav-item nav-link" href="{% url 'accounts:register' %}">Register</a>
+            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
           {% endif %}
           </div>
         </div>

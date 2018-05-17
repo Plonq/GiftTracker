@@ -5,4 +5,7 @@
 {% block content %}
   {% load crispy_forms_tags %}
   {% crispy form %}
+  <div>
+    <a href="{% url 'register' %}">Register</a> | <a href="{% url 'password_reset' %}">Forgot Password</a>
+  </div>
 {% endblock %}

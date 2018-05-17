@@ -9,6 +9,9 @@ from crispy_forms.layout import Submit
 from .models import User
 
 
+#
+# User-facing forms
+#
 class UserCreationForm(forms.ModelForm):
     """
     User creation, aka registration form
@@ -41,31 +44,24 @@ class UserCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('register', 'Register'))
+        self.helper.add_input(Submit('submit', 'Register'))
 
 
-class UserChangeForm(forms.ModelForm):
+class UserProfileEditForm(forms.ModelForm):
     """
-    A form for updating users. This has all the data
-    needed for django-admin
+    A form for regular uses to edit their profile
     """
-    password = ReadOnlyPasswordHashField()
-
     class Meta:
         model = User
         fields = (
-            'email',
             'first_name',
             'last_name',
-            'password',
-            'is_active',
           )
 
-    def clean_password(self):
-        # Regardless of what the user provides, return the initial value.
-        # This is done here, rather than on the field, because the
-        # field does not have access to the initial value
-        return self.initial["password"]
+    def __init__(self, *args, **kwargs):
+        super(UserProfileEditForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Save'))
 
 
 class UserChangeSelfForm(forms.ModelForm):
@@ -82,7 +78,7 @@ class UserChangeSelfForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserChangeSelfForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('save', 'Save'))
+        self.helper.add_input(Submit('submit', 'Save'))
 
 
 class EmailChangeForm(forms.ModelForm):
@@ -98,34 +94,36 @@ class EmailChangeForm(forms.ModelForm):
     def clean_requested_email(self):
         requested_email = self.cleaned_data.get('requested_email')
         if User.objects.filter(email=requested_email).exists():
+            if self.instance.email == requested_email:
+                raise forms.ValidationError('That is the same as your current email address')
             raise forms.ValidationError('That email is already taken')
         return requested_email
 
     def __init__(self, *args, **kwargs):
         super(EmailChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('save', 'Save'))
+        self.helper.add_input(Submit('submit', 'Save'))
 
 
 class PasswordChangeForm(auth_forms.PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('change', 'Change'))
+        self.helper.add_input(Submit('submit', 'Change'))
 
 
 class PasswordResetForm(auth_forms.PasswordResetForm):
     def __init__(self, *args, **kwargs):
         super(PasswordResetForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('reset', 'Reset'))
+        self.helper.add_input(Submit('submit', 'Reset'))
 
 
 class SetPasswordForm(auth_forms.SetPasswordForm):
     def __init__(self, *args, **kwargs):
         super(SetPasswordForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('save', 'Save'))
+        self.helper.add_input(Submit('submit', 'Set Password'))
 
 
 class AuthenticationForm(auth_forms.AuthenticationForm):
@@ -134,4 +132,31 @@ class AuthenticationForm(auth_forms.AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(AuthenticationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('login', 'Login'))
+        self.helper.add_input(Submit('submit', 'Login'))
+
+
+#
+# Django-admin forms
+#
+class UserChangeForm(forms.ModelForm):
+    """
+    A form for updating users. This has all the data
+    needed for django-admin
+    """
+    password = ReadOnlyPasswordHashField()
+
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'password',
+            'is_active',
+        )
+
+    def clean_password(self):
+        # Regardless of what the user provides, return the initial value.
+        # This is done here, rather than on the field, because the
+        # field does not have access to the initial value
+        return self.initial["password"]

@@ -1,9 +1,17 @@
 {% extends 'base_titled.html' %}
 
-{% block title %}{% block header %}My Account{% endblock %}{% endblock %}
+{% block title %}{% block header %}My Profile{% endblock %}{% endblock %}
 
 {% block content %}
+  <p><strong>Email:</strong> {{ user.email }} <a href="{% url 'email_edit' %}">change</a> </p>
   <p><strong>First Name:</strong> {{ user.first_name }}</p>
   <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+  <div>
+    <a href="{% url 'password_change' %}">Change Password</a>
+    |
+    <a href="{% url 'profile_edit' %}">Edit Profile</a>
+    |
+    <a href="{% url 'delete_account' %}">Delete Account</a>
+  </div>
 {% endblock %}
 

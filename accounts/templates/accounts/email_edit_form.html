@@ -1,0 +1,10 @@
+{%  extends 'base_titled.html' %}
+
+{% block title %}{% block header %}Update Email{% endblock %}{% endblock %}
+
+{% block content %}
+  <p><strong>Current Email:</strong> {{ user.email }}</p>
+  {% load crispy_forms_tags %}
+  {% crispy form %}
+{% endblock %}
+
